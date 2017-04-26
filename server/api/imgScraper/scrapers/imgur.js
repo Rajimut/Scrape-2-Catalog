@@ -17,9 +17,8 @@ exports.list = function(url, cb) {
 			var $ = cheerio.load(body);
 			var pin = {};
 			var $url = url;
-			var $img = $('.post-image-placeholder').attr('src');
-			var $img_ = $('.image post-image');
-			console.log($img_)
+			var $img = $('.post-image img').attr('src');
+			console.log($img + ' pin url')
 
 			// get from pinterest
 			//var $desc = $('.image post-image img').attr('src'); // description from pinterest

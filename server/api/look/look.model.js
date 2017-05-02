@@ -5,13 +5,13 @@ var mongoose = require('mongoose');
 // Schema from mongoose is needed because we are creating a new schema called LookSchema (table like) for saving various pin (each pin has a description, tags etc) that each user has in my looks page
 var Schema = mongoose.Schema;
 
-var LookSchema = new Schema{{
-	image: String;
-	linkURL: Srting;
-	title: String;
-	description: String;
+var LookSchema = new Schema({
+	image: String,
+	linkURL: String,
+	title: String,
+	description: String,
 	tags: [{
-		type: String;
+		type: String
 	}],
 	creator: {
 		type: Schema.ObjectId,
@@ -19,7 +19,7 @@ var LookSchema = new Schema{{
 	},
 	email: String,
 	userName: String,
-	createTime; {
+	createTime: {
 		type: Date,
 		'default': Date.now
 	},
@@ -31,7 +31,7 @@ var LookSchema = new Schema{{
 		type: Number,
 		'default': 0
 	}
-}}
+})
 // export module is used to export the module so that it can be used in another place
 module.exports = mongoose.model('Look', LookSchema);
 

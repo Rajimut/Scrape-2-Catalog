@@ -45,12 +45,13 @@
   		$scope.showScrapeDetails = true;
   		$scope.gotScrapeResults = true;
   		$scope.uploadLookTitle = false;
-  		$scope.look.imgThumb = data.data.img;
+  		$scope.look.imgThumb = data.data.img
+      //$scope.look.description = data.data.desc;
   	})
   	.catch(function(data){
   		console.log('failed to return from link1' + data);
   		$scope.loading = false;
-  		// $scope.look.link ='';
+  		$scope.look.link ='';
   		$scope.gotScrapeResults = false;
 
   	})
@@ -58,7 +59,35 @@
   		$scope.loading = false;
   		$scope.uploadLookForm = false;
 
-  	})
-  })
+  	});
+  });
+  // addScrapePost is used to upload the images and details we scraped to the database
+  $scope.addScrapePost = function() {
+    var look = {
+      //description: $scope.look.description,
+      title: $scope.look.title,
+      image: $scope.look.imgThumb,
+      linkURL: $scope.look.link,
+      // scope.user.email is a varible created up which holds the current user
+      email: $scope.user.email,
+      name: $scope.user.name,
+      _creator: $scope.user._id
+    }
+    console.log(look);
+    $http.post('/api/look/scrapeUpload', look)
+      .then (function(data){
+        // resetting the form field if the post function is successful into the database
+        $scope.showScrapeDetails = false;
+        $scope.gotScrapeResults = false;
+        //$scope.look.title = '';
+        //$scope.look.link = '';
+        console.log(data);
+      })
+      .catch(function(){
+        console.log('failed to post');
+        $scope.showScrapeDetails = false;
+      });
+  }
+
   }
 })();

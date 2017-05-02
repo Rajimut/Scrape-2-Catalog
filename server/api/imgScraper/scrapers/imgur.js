@@ -17,11 +17,11 @@ exports.list = function(url, cb) {
 			var $ = cheerio.load(body);
 			var pin = {};
 			var $url = url;
-			var $img = $('.post-image img').attr('src');
-			console.log($img + ' pin url')
+			var $img = 'http:' + $('.post-image img').attr('src');
+			console.log($img + ' xxx pin url')
 
 			// get from pinterest
-			//var $desc = $('.image post-image img').attr('src'); // description from pinterest
+			// var $desc = $('.image post-image img').attr('src'); // description from pinterest
 		var pin = {
 			img: $img,
 			url: $url

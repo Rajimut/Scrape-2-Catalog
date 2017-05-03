@@ -10,8 +10,8 @@
   function MainCtrl($scope, $state, Auth, $modal, $http) {
     $scope.user = Auth.getCurrentUser();
     $scope.look = {}; // obj to load individual look
-    $scope.look.title = 'HELLO'
-    // $scope.look.link = ''
+    $scope.look.title = ''
+    $scope.look.link = ''
 
     $scope.uploadLookTitle = true;
     $scope.uploadLookForm = false;
@@ -34,7 +34,6 @@
   	console.log(newVal + " " + newVal.length)
   	if(newVal.length > 3){
   		$scope.loading = true;
-  	}
   	console.log($scope.look.link)
   	console.log($scope.look)
   	$http.post('/api/links', {
@@ -60,6 +59,7 @@
   		$scope.uploadLookForm = false;
 
   	});
+  }
   });
   // addScrapePost is used to upload the images and details we scraped to the database
   $scope.addScrapePost = function() {
@@ -79,8 +79,8 @@
         // resetting the form field if the post function is successful into the database
         $scope.showScrapeDetails = false;
         $scope.gotScrapeResults = false;
-        //$scope.look.title = '';
-        //$scope.look.link = '';
+        $scope.look.title = '';
+        $scope.look.link = '';
         console.log(data);
       })
       .catch(function(){

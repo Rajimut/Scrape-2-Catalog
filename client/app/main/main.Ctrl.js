@@ -5,9 +5,9 @@
     .module('app')
     .controller('MainCtrl', MainCtrl);
 
-  MainCtrl.$inject = ['$scope', '$state', 'Auth', '$modal', '$http'];
+  MainCtrl.$inject = ['$scope', '$state', 'Auth', '$modal', 'looksAPI', 'scrapeAPI'];
 
-  function MainCtrl($scope, $state, Auth, $modal, $http) {
+  function MainCtrl($scope, $state, Auth, $modal, looksAPI, scrapeAPI) {
     $scope.user = Auth.getCurrentUser();
     $scope.look = {}; // obj to load individual look
     $scope.look.title = ''
@@ -36,29 +36,31 @@
   		$scope.loading = true;
   	console.log($scope.look.link)
   	console.log($scope.look)
-  	$http.post('/api/links', {
-  		url: $scope.look.link
-  	})
-  	.then(function(data){
+    // create link object  from the $scope.look.link
+    var link = {
+      url: $scope.look.link
+    }
+  	scrapeAPI.getScrapeDetails(link)
+  	  .then(function(data){
   		console.log(data);
   		$scope.showScrapeDetails = true;
   		$scope.gotScrapeResults = true;
   		$scope.uploadLookTitle = false;
   		$scope.look.imgThumb = data.data.img
       //$scope.look.description = data.data.desc;
-  	})
-  	.catch(function(data){
-  		console.log('failed to return from link1' + data);
-  		$scope.loading = false;
-  		$scope.look.link ='';
-  		$scope.gotScrapeResults = false;
+  	  })
+    	.catch(function(data){
+    		console.log('failed to return from link1' + data);
+    		$scope.loading = false;
+    		$scope.look.link ='';
+    		$scope.gotScrapeResults = false;
 
-  	})
-  	.finally(function(){
-  		$scope.loading = false;
-  		$scope.uploadLookForm = false;
+    	})
+    	.finally(function(){
+    		$scope.loading = false;
+    		$scope.uploadLookForm = false;
 
-  	});
+    	});
   }
   });
   // addScrapePost is used to upload the images and details we scraped to the database
@@ -74,7 +76,7 @@
       _creator: $scope.user._id
     }
     console.log(look);
-    $http.post('/api/look/scrapeUpload', look)
+    looksAPI.createScrapeLook(look)
       .then (function(data){
         // resetting the form field if the post function is successful into the database
         $scope.showScrapeDetails = false;

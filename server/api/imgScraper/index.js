@@ -16,6 +16,6 @@ var auth = require('../../auth/auth.service');
 // that is once an user inputs url of pintrest then this route s gonna be called
 // we want to allow this only for logged in users
 // 
-router.post('/', auth.isAuthenticated(), controller.scrape);
+router.post('/scrape', auth.isAuthenticated(), controller.scrape);
 //controller.scrape is the method going to be defined in controller
 module.exports = router;

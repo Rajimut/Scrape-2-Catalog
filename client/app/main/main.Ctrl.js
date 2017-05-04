@@ -10,6 +10,7 @@
   function MainCtrl($scope, $state, Auth, $modal, looksAPI, scrapeAPI) {
     $scope.user = Auth.getCurrentUser();
     $scope.look = {}; // obj to load individual look
+    $scope.looks = [];
     $scope.look.title = ''
     $scope.look.link = ''
 
@@ -46,7 +47,7 @@
   		$scope.showScrapeDetails = true;
   		$scope.gotScrapeResults = true;
   		$scope.uploadLookTitle = false;
-  		$scope.look.imgThumb = data.data.img
+  		$scope.look.imgThumb = data.data.img;
       //$scope.look.description = data.data.desc;
   	  })
     	.catch(function(data){
@@ -83,6 +84,7 @@
         $scope.gotScrapeResults = false;
         $scope.look.title = '';
         $scope.look.link = '';
+        $scope.looks.splice(0,0,data.data);
         console.log(data);
       })
       .catch(function(){

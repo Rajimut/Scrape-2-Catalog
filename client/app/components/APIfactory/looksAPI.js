@@ -15,7 +15,11 @@
     return {
       createScrapeLook: createScrapeLook,
       //getAllLooks methos is defined in the return object so we can use it in other methods
-      getAllLooks:getAllLooks
+      getAllLooks:getAllLooks,
+      fineOneLook: findOneLook,
+      getUpdateLook: getUpdateLook,
+      updateLook: updateLook,
+      deleteLook: deleteLook
     }
 
     function getAllLooks(){
@@ -24,7 +28,29 @@
       catche:true  
       });
     }
-    
+
+    function getUserLooks(id){
+      return $http.get('/api/look/getUserLooks/?email='+ id,{
+        cache: true
+      });
+    }
+
+    function findOneLook(look) {
+      return $http.get('/api/look' + look);
+    }
+
+    function getUpdateLook(look) {
+      return $http.get('/api/look/' + look._id);
+    }
+
+    function updateLook(look) {
+      return $http.put('/api/look/' + look._id, look);
+    }
+
+    function deleteLook(look) {
+      return $http.delete('/api/look/' + look._id)
+    }
+
     function createScrapeLook(look){
      return $http.post('/api/look/scrapeUpload', look)
     }

@@ -28,7 +28,55 @@ Look.find({})
 		return res.status(200)
 		.json(looks);
 	})
-}
+};
+
+exports.userLooks = function(req, res) {
+	//this is to filter the database for this particular usera (USING EMAIL ID)
+	var userEmail = req.query.email;
+	Look.find({
+		email:{
+			$in: userEmail
+		}
+	})
+	.sort({
+		createTime: -1
+
+	})
+	.exec(function(err, looks){
+		if(err){
+			return handleError(res, err);
+		}
+		console.log(looks);
+		return res.status(200)
+			.json(looks);
+		});
+};
+exports.upload = function(req, res) {
+  var newLook = new Look();
+  var fileimage = req.middlewareStorage.fileimage;
+
+  console.log(req.body);
+  newLook.image = '/assets/images/uploads/' + fileimage;
+  newLook.email = req.body.email;
+  newLook.linkURL = req.body.linkURL;
+  newLook.title = req.body.title;
+  newLook.description = req.body.description;
+  newLook.userName = req.body.name;
+  newLook._creator = req.body._creator;
+  newLook.createTime = Date.now();
+  newLook.upVotes = 0;
+
+  newLook.save(function(err, look) {
+    if(err) {
+      console.log('error saving look');
+      return res.send(500);
+    } else {
+      console.log(look);
+      res.status(200)
+           .send(look);
+    }
+  });
+};
 exports.scrapeUpload = function (req,res){	
 	var random = utils.randomizer(32, '01234567890abcdefghijklmnopqrstuvwxyz');
 	console.log('hh');
@@ -61,6 +109,63 @@ exports.scrapeUpload = function (req,res){
 
 	})
 }
+
+// This method is to update a look
+exports.update = function (req, res){
+	if(req.body._id){
+		delete req.body._id;
+	}
+	Look.findById(req.params.id, function(err, look){
+		if(err){
+			return handleError(res, err)
+			}
+		if(!look){
+			return res.send(404);
+		}
+		// we are using _merge to save the new title description for a look
+		var updated = _.merge(look, req.body);
+		updated.save(function(err){
+			if(err){
+				return handleError(res, err);
+			}
+			console.log(look);
+			return res.json(look);
+		});
+	});
+}
+// This method is used to find a single look, by passing the parameter for that look
+// 
+exports.singleLook = function(req, res) {
+	Look.findById(req.params.lookId, function(err, look){
+		if(err){
+			return handleError (res, err);
+		}
+		if(!look) {
+			return res.send(404);
+		}
+		return res.json(look);
+	});
+};
+
+// this method is to delete a look
+// 
+exports.delete = function(req, res) {
+	Look.findById(req.params.id, function(err, look){
+		if(err){
+			return handleError(res, err);
+		}
+		if(!look) {
+			return res.send(404);
+		}
+		look.remove(function(err){
+			if(err) {
+				return handleError(res, err);
+			}
+			return res.send(200);
+		});
+
+	});
+};
 
 function handleError(res, err){
 	return res.send(500, err);

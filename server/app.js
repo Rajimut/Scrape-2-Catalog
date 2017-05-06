@@ -1,6 +1,4 @@
- 
-    
-/**
+ /**
  * Main application file
  */
 

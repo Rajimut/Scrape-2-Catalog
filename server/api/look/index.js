@@ -9,5 +9,8 @@ var router = express.Router();
 var auth = require('../../auth/auth.service');
 router.post('/scrapeUpload', auth.isAuthenticated(), controller.scrapeUpload);
 router.get('/', controller.index);
+// below we are creating a new route to retrive all the looks from the database (i.e using get method)
+// allLooks is a fuction in the controller that will fetch the different images from db
+router.get('/getAllLooks', controller.allLooks);
 
 module.exports = router;

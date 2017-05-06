@@ -11,16 +11,25 @@
 
   looksAPI.$inject = ['$http'];
 
-// function to return createScrapeLook
-
-  function looksAPI($http){
+  function looksAPI($http) {
     return {
-    createScrapeLook: createScrapeLook
+      createScrapeLook: createScrapeLook,
+      //getAllLooks methos is defined in the return object so we can use it in other methods
+      getAllLooks:getAllLooks
     }
 
+    function getAllLooks(){
+      // this link below is the end point that we have created in index.js in look folder
+      return $http.get('/api/look/getAllLooks',{
+      catche:true  
+      });
+    }
+    
     function createScrapeLook(look){
      return $http.post('/api/look/scrapeUpload', look)
     }
   }
+
+// function to return createScrapeLook
 
 })();

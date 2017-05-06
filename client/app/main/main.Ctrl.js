@@ -11,10 +11,10 @@
     $scope.user = Auth.getCurrentUser();
     $scope.look = {}; // obj to load individual look
     $scope.looks = [];
-    $scope.look.title = ''
-    $scope.look.link = ''
+    $scope.look.title = '';
+    $scope.look.link = '';
 
-    $scope.uploadLookTitle = true;
+    $scope.uploadLookTitle = false;
     $scope.uploadLookForm = false;
     $scope.showScrapeDetails = false;
     $scope.scrapePostForm = true; //added by raji
@@ -48,8 +48,19 @@
     });
 
     $scope.showModal = function(){ // its on the button so when u click the button modal will pop u
-    	myModal.$promise.then(myModal.show); // angular starp modal documentation
+    	myModal.$promise.then(myModal.show);
+      console.log("12345")
+      $scope.look.link = ''; // angular starp modal documentation
     }
+  looksAPI.getAllLooks()
+    .then(function(data){
+      console.log(data);
+      $scope.looks = data.data;
+    })  
+    .catch(function(err){ // to catch the errors
+      console.log('failed to get the looks' + err);
+    });
+
 // to watch if there are changes to url field entered by user
   $scope.$watch('look.link', function(newVal, oldVal){
   	console.log(newVal + " " + newVal.length)
@@ -84,6 +95,7 @@
     	});
   }
   });
+
   // addScrapePost is used to upload the images and details we scraped to the database
   $scope.addScrapePost = function() {
     var look = {

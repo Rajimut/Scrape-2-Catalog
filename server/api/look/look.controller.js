@@ -7,6 +7,28 @@ var path = require('path');
 // that folder will be located in the routes of the folder
 var utils = require('../../utils/utils.js');
 
+exports.allLooks = function (req, res) {
+// find is a method in mongoosejs API that when passed in an empty object will grab all the looks in this model
+Look.find({})
+	.sort({
+		// we are sorting in ascending order based on the create time
+		// create time is a property on our look
+		createTime: -1
+	}) // below we are doing an execute function because we are chaining functions above
+	.exec(function(err, looks){
+		// .exec takes error and response. In this case looks is the response
+		if(err){
+			// handleError is a function created by us below at the very end of this file
+			return handleError(res,err);
+		}
+		if(!looks){
+		return res.send(404);
+		}
+		console.log(looks);
+		return res.status(200)
+		.json(looks);
+	})
+}
 exports.scrapeUpload = function (req,res){	
 	var random = utils.randomizer(32, '01234567890abcdefghijklmnopqrstuvwxyz');
 	console.log('hh');
@@ -38,6 +60,10 @@ exports.scrapeUpload = function (req,res){
 
 
 	})
+}
+
+function handleError(res, err){
+	return res.send(500, err);
 }
 
 exports.index = function(req, res) {

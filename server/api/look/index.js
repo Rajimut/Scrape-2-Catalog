@@ -7,9 +7,11 @@ var router = express.Router();
 
 // auth is needed to protect our pages. only logged in users have to be allowed
 var auth = require('../../auth/auth.service');
+
+console.log('3');
 router.post('/scrapeUpload', auth.isAuthenticated(), controller.scrapeUpload);
 router.post('/upload', auth.isAuthenticated(), controller.upload);
-
+console.log('4');
 router.put('/:id', auth.isAuthenticated(), controller.update);
 
 router.get('/', controller.index);

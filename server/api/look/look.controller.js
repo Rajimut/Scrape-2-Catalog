@@ -52,6 +52,7 @@ exports.userLooks = function(req, res) {
 		});
 };
 exports.upload = function(req, res) {
+	console.log('hiii');
   var newLook = new Look();
   var fileimage = req.middlewareStorage.fileimage;
 
@@ -92,6 +93,7 @@ exports.scrapeUpload = function (req,res){
 		newLook._creator = req.body._creator;
 		newLook.createTime = Date.now();
 		newLook.upVotes = 0;
+		// slice is used for trimmimg the file name
 		newLook.image = filename.slice(9);
 		// save is a mongoose method to save the data
 		newLook.save(function(err,item){
@@ -165,6 +167,34 @@ exports.delete = function(req, res) {
 		});
 
 	});
+};
+
+exports.upload = function(req, res){
+	var newLook = new Look();
+	// req.middlewareStorage.fileimage is multer format
+	var fileimage = req.middlewareStorage.fileimage;
+	newLook.image = 'assets/images/uploads/' + fileimage;
+	newLook.email = req.body.email;
+	newLook.linkURL = req.body.linkURL;
+	newLook.title = req.body.title;
+	newLook.description = req.body.description;
+	newLook.userName = req.body.name;
+	newLook._creator = req.body._creator;
+	newLook.createTime = Date.now();
+	newLook.upVotes = 0;
+	//newLook.image = filename.slice(9);
+	newLook.save(function(err, look){
+		if(err){
+			console.log('error occured saving image');
+			return res.send(500);
+		} else {
+			console.log('Success post saved');
+			console.log(look);
+			res.status(200)
+			.send(look);
+		}
+	});
+
 };
 
 function handleError(res, err){

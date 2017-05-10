@@ -5,24 +5,24 @@
     .module('app')
     .controller('MainCtrl', MainCtrl);
 
-  MainCtrl.$inject = ['$scope', '$state', 'Auth', '$modal', 'looksAPI', 'scrapeAPI', '$alert'];
+  MainCtrl.$inject = ['$scope', '$state', 'Auth', '$modal', 'looksAPI', 'scrapeAPI', '$alert', 'Upload'];
 
-  function MainCtrl($scope, $state, Auth, $modal, looksAPI, scrapeAPI, $alert) {
+  function MainCtrl($scope, $state, Auth, $modal, looksAPI, scrapeAPI, $alert, Upload) {
     $scope.user = Auth.getCurrentUser();
     $scope.look = {}; // obj to load individual look
     $scope.looks = [];
     $scope.look.title = '';
     $scope.look.link = '';
 
-    $scope.uploadLookTitle = false;
-    $scope.uploadLookForm = false;
     $scope.showScrapeDetails = false;
     $scope.scrapePostForm = true; //added by raji
 
     $scope.gotScrapeResults = false;
     $scope.loading = false;
 
-
+    $scope.picPreview = true;
+    $scope.uploadLookTitle = false;
+    $scope.uploadLookForm = false;
 // adding success and failure message functions (to be used in create scrape look)
     var alertSuccess = $alert({
       title: 'Success!',
@@ -52,6 +52,13 @@
       console.log("12345")
       $scope.look.link = ''; // angular starp modal documentation
     }
+
+  $scope.showUploadForm = function(){
+    $scope.uploadLookForm = true;
+    $scope.scrapePostForm = false;
+    $scope.uploadLookTitle = false;
+  }
+
   looksAPI.getAllLooks()
     .then(function(data){
       console.log(data);
@@ -130,6 +137,42 @@
         $scope.look.link = '';
       });
   }
-
+  $scope.uploadPic = function(file){
+    console.log('1');
+    // Upload here refers to ng-file upload 
+    // most of the function below are from ng-file upload github repo 's function
+    Upload.upload({
+          url: '/api/look/upload',
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          data: {
+            file: file,
+            title: $scope.look.title,
+            //description: $scope.look.description,
+            email: $scope.user.email,
+            name: $scope.user.name,
+            linkURL: $scope.look._id,
+            _creator: $scope.user._id
+          }
+        }).then(function(resp){
+          console.log('2');
+          console.log('successful upload');
+          // to add this successful upload to mylooks page use splice
+          $scope.looks.splice(0,0, resp.data);
+          $scope.look.title = '';
+          $scope.look.description = '';
+          $scope.picFile = '';
+          $scope.picPreview = false;
+          alertSuccess.show();
+          // in case if upload fails it does alert Fail
+        }, function(resp){
+          alertFail.show();
+          // another intermediate function to know the level of upload
+        }, function(evt){
+            var progressPercentage = parseInt(100.0*evt.loaded/evt.total);
+            console.log('progress:' + progressPercentage + '%' + evt.config.data.file.name);
+        });
+      }
   }
 })();

@@ -9,6 +9,7 @@ var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var compression = require('compression');
 var bodyParser = require('body-parser');
+var multer = require('multer');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
@@ -32,6 +33,29 @@ module.exports = function(app) {
   }));
   app.use(bodyParser.json());
   app.use(methodOverride());
+  app.use(multer({
+    // configuration file for multer
+    // these methods below are a part of multer 0.1.8
+    // destination in the server for the image that is uploaded by user
+    dest: '../client/assets/images/uploads/',
+    rename: function(fieldname, filename){
+      return filename + Date.now();
+    },
+    onFileUploadStart: function(file){
+      // sending the file name to the console
+      console.log(file.originalname + 'is starting...');
+    },
+    // store the location of the image to an object, and access that object in
+    // the controller
+    onFileUploadComplete: function(file, req, res){
+      var fileimage = file.name;
+      // new obj called middleware storage
+      req.middlewareStorage = {
+        fileimage: fileimage
+        // req.middlewareStorage.filename is a reference to the location of the image file 
+      }
+    }
+  }))
   app.use(cookieParser());
   app.use(passport.initialize());
 

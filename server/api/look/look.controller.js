@@ -51,6 +51,7 @@ exports.userLooks = function(req, res) {
 			.json(looks);
 		});
 };
+
 exports.upload = function(req, res) {
 	console.log('hiii');
   var newLook = new Look();

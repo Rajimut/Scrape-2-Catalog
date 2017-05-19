@@ -19,7 +19,8 @@
       fineOneLook: findOneLook,
       getUpdateLook: getUpdateLook,
       updateLook: updateLook,
-      deleteLook: deleteLook
+      deleteLook: deleteLook,
+      getUserLooks: getUserLooks
     }
 
     function getAllLooks(){
@@ -28,8 +29,9 @@
       catche:true  
       });
     }
-
+    // id is th email goes to the route  v
     function getUserLooks(id){
+      console.log('qwerty');
       return $http.get('/api/look/getUserLooks/?email='+ id,{
         cache: true
       });

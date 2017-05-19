@@ -49,7 +49,6 @@
 
     $scope.showModal = function(){ // its on the button so when u click the button modal will pop u
     	myModal.$promise.then(myModal.show);
-      console.log("12345")
       $scope.look.link = ''; // angular starp modal documentation
     }
 
@@ -61,7 +60,6 @@
 
   looksAPI.getAllLooks()
     .then(function(data){
-      console.log(data);
       $scope.looks = data.data;
     })  
     .catch(function(err){ // to catch the errors
@@ -73,15 +71,12 @@
   	console.log(newVal + " " + newVal.length)
   	if(newVal.length > 3){
   		$scope.loading = true;
-  	console.log($scope.look.link)
-  	console.log($scope.look)
     // create link object  from the $scope.look.link
     var link = {
       url: $scope.look.link
     }
   	scrapeAPI.getScrapeDetails(link)
   	  .then(function(data){
-  		console.log(data);
   		$scope.showScrapeDetails = true;
   		$scope.gotScrapeResults = true;
   		$scope.uploadLookTitle = false;
@@ -115,7 +110,7 @@
       name: $scope.user.name,
       _creator: $scope.user._id
     }
-    console.log(look);
+    
     looksAPI.createScrapeLook(look)
       .then (function(data){
         // displaying success/failure messages
@@ -126,7 +121,9 @@
         $scope.look.title = '';
         $scope.look.link = '';
         $scope.looks.splice(0,0,data.data);
-        console.log(data);
+        //$scope.userLooks.splice(0,0,data.data);
+        //console.log(userLooks.length);
+
       })
       .catch(function(){
         alertFail.show();
@@ -137,8 +134,8 @@
         $scope.look.link = '';
       });
   }
+
   $scope.uploadPic = function(file){
-    console.log('1');
     // Upload here refers to ng-file upload 
     // most of the function below are from ng-file upload github repo 's function
     Upload.upload({
@@ -156,7 +153,6 @@
             _creator: $scope.user._id
           }
         }).then(function(resp){
-          console.log('2');
           console.log('successful upload');
           // to add this successful upload to mylooks page use splice
           $scope.looks.splice(0,0, resp.data);

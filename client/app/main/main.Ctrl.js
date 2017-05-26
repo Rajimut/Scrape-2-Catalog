@@ -98,6 +98,20 @@
   }
   });
 
+  $scope.addVote = function(look) {
+    looksAPI.upVoteLook(look)
+    .then(function(data){
+      // this is to increament the upVotes in the front end or the html page
+      // because upVotes increamented in the backend will reflect only after you referesh
+      // So in order to show the result in the front end without refreshing we can increase temporarily in the front end
+      // once refreshed the temporary increament disapprears and orginal increment from the database reflects
+      look.upVotes++;
+    })
+    .catch(function(err){
+      console.log('failed adding upVote')
+    });
+  }
+
   // addScrapePost is used to upload the images and details we scraped to the database
   $scope.addScrapePost = function() {
     var look = {

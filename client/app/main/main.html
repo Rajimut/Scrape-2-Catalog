@@ -55,12 +55,13 @@
           </div>
         </a>
         <div class="social">
+          <!-- addVote(look) is the function that increases the number of vote by 1 when clicked -->
         <a href="#"
              class="like-look"
              ng-click="addVote(look)">
           <i class="fa fa-thumbs-o-up fa-2x icon-like"></i></a>
             <span class="likeCount">{{ look.upVotes }}</span>
-
+            <!--the number of views is incremented by a function called addView. It is present in the controller and gets initiated when all the views are loaded-->
             <span class="viewCount pull-right">{{ look.views }}</span>
           <i class="fa fa-eye fa-2x pull-right icon-views"></i>
 

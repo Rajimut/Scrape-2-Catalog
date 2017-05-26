@@ -67,6 +67,7 @@ exports.upload = function(req, res) {
   newLook._creator = req.body._creator;
   newLook.createTime = Date.now();
   newLook.upVotes = 0;
+  newLook.views = 0;
 
   newLook.save(function(err, look) {
     if(err) {
@@ -94,6 +95,7 @@ exports.scrapeUpload = function (req,res){
 		newLook._creator = req.body._creator;
 		newLook.createTime = Date.now();
 		newLook.upVotes = 0;
+		newLook.views = 0;
 		// slice is used for trimmimg the file name
 		newLook.image = filename.slice(9);
 		// save is a mongoose method to save the data
@@ -115,6 +117,7 @@ exports.scrapeUpload = function (req,res){
 
 // This method is to update a look
 exports.update = function (req, res){
+	console.log('555555')
 	if(req.body._id){
 		delete req.body._id;
 	}
@@ -151,6 +154,7 @@ exports.singleLook = function(req, res) {
 };
 
 exports.popLooks = function(req, res) {
+
 	Look.find(req.params.id)
 	.sort('-upVotes')
 	.limit(6)
@@ -211,12 +215,55 @@ exports.upload = function(req, res){
 
 };
 
+exports.addView = function(req,res){
+	console.log('TTest')
+	Look.findById(req.params.id, function(err,look){
+		if(err){
+			return handleError(res,err);
+		}
+		if(!look){
+			return res.send(404);
+		}
+		//increamenting the look by 1
+		look.views++;
+		// saving the look
+		look.save(function(err){
+			if(err){
+				return handleError(res, err);
+			}
+			return res.json(look);
+		})
+
+	})
+}
+
+exports.addupVotes = function(req,res){
+	console.log('hiiiiiiiii')
+	Look.findById(req.params.id, function(err,look){
+		if(err){
+			return handleError(res,err);
+		}
+		if(!look){
+			return res.send(404);
+		}
+		//increamenting the upVotes by 1
+		look.upVotes++;
+		// saving the look
+		look.save(function(err){
+			if(err){
+				return handleError(res, err);
+			}
+			return res.json(look);
+		})
+
+	})
+}
+
 function handleError(res, err){
 	return res.send(500, err);
 }
 
 exports.index = function(req, res) {
- 
     res.json(200, users);
 
 };

@@ -19,6 +19,11 @@
 		.then(function(data){
 			//console.log(data);
 			$scope.look = data.data;
+			// these functions findonelook, poplooks getcomments etc etc all instanciated/run
+			// when the look page is loaded for the first time as they are called in different parts of the look page. 
+			// So its a good option to include add view function to one of these so it gets triggered when the look page is open
+		 addView();
+			// the function will clear at the bottom of the controller
 		})
 		.catch(function(err){
 			console.log('failed to get look', err);
@@ -42,6 +47,20 @@
 		console.log('failed to get comments' + err)
 	});
 
+    $scope.addVote = function(look) {
+		looksAPI.upVoteLook(look)
+		.then(function(data){
+		 // this is to increament the upVotes in the front end or the html page
+		 // because upVotes increamented in the backend will reflect only after you referesh
+		 // So in order to show the result in the front end without refreshing we can increase temporarily in the front end
+		 // once refreshed the temporary increament disapprears and orginal increment from the database reflects
+		 look.upVotes++;
+    })
+    .catch(function(err){
+      console.log('failed adding upVote')
+    });
+  }
+
 	$scope.postComment = function(){
 		var comment = {
 			authorId: $scope.user._id,
@@ -60,6 +79,21 @@
 		.catch(function(err){
 			console.log('failed to post comment' + err);
 		})
+	}
+
+	function addView(){
+		looksAPI.addView($scope.id)
+		// the difference between addVotes and addViews is that in addVote the function looksAPI.upVoteLook(look) is called 
+		// in which look object look is passed
+		// but in addView the function looksAPI.addView($scope.id) is called in which Id of the object is passed
+		// So in the looksAPI the corresponding difference is made in these function
+		// Note: the Functions in looksAPI are very generic and modular. 
+		.then(function(res){
+			//console.log(res);
+		})
+		.catch(function(err){
+			console.log('failed to increment', err);
+		});
 	}
 
 	}

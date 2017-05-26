@@ -49,10 +49,10 @@
 			$scope.userLooks = [];
 				looksAPI.getUserLooks(userEmail)
 				.then(function(data){
-					console.log('load Data');
-					console.log(userEmail);
+					//console.log('load Data');
+					//console.log(userEmail);
 					$scope.userLooks = data.data;
-					console.log($scope.userLooks.length);
+					// console.log($scope.userLooks.length);
 					//$state.go('mylooks');
 				})
 				.catch(function(err){
@@ -64,9 +64,9 @@
 		looksAPI.getUserLooks(userEmail)
 			.then(function(data){
 				console.log('HAPPY BIRTHDAY');
-				console.log(userEmail);
+				//console.log(userEmail);
 				$scope.userLooks = data.data;
-				console.log($scope.userLooks.length);
+				//console.log($scope.userLooks.length);
 				//$state.go('mylooks');
 			})
 			.catch(function(err){
@@ -101,8 +101,9 @@
 				alertFail.show();
 			})
 			.finally(function(){
-				$scope.loadData();
-				$state.go('mylooks');
+				//$scope.loadData();
+				// the above function  and the below line did not work for refreshing the page
+				//$state.go('mylooks');
 			});
 		}
 

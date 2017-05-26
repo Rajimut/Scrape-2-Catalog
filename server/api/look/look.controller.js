@@ -150,6 +150,19 @@ exports.singleLook = function(req, res) {
 	});
 };
 
+exports.popLooks = function(req, res) {
+	Look.find(req.params.id)
+	.sort('-upVotes')
+	.limit(6)
+	.exec(function(err, looks){
+		if (err) {
+			return handleError(res,err);
+		}
+		console.log(looks);
+		return res.json(looks);
+	});
+};
+
 // this method is to delete a look
 // 
 exports.delete = function(req, res) {

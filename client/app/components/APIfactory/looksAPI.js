@@ -16,11 +16,12 @@
       createScrapeLook: createScrapeLook,
       //getAllLooks methos is defined in the return object so we can use it in other methods
       getAllLooks:getAllLooks,
-      fineOneLook: findOneLook,
+      findOneLook: findOneLook,
       getUpdateLook: getUpdateLook,
       updateLook: updateLook,
       deleteLook: deleteLook,
-      getUserLooks: getUserLooks
+      getUserLooks: getUserLooks,
+      popLooks: popLooks
     }
 
     function getAllLooks(){
@@ -38,7 +39,13 @@
     }
 
     function findOneLook(look) {
-      return $http.get('/api/look' + look);
+      // whenever we are psssing a parameter to function it acts as a variable
+      // here look is a variable
+      return $http.get('/api/look/' + look);
+    }
+
+    function popLooks(look) {
+      return $http.get('/api/look/popLooks/' + look);
     }
 
     function getUpdateLook(look) {

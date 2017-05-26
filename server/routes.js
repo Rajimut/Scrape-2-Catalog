@@ -14,6 +14,7 @@ module.exports = function(app) {
   // look route added by raji
   app.use('/api/users', require('./api/user'));
   app.use('/api/links', require('./api/imgScraper'));
+  app.use('/api/comments', require('./api/comments'));
   app.use('/api/look',require('./api/look'));
   app.use('/auth', require('./auth'));
   app.post('/forgotpassword', require('./forgotpassword').reset);

@@ -30,7 +30,11 @@
       </div>
 
   <!-- Angular Grid -->
-  <div class="container">
+  <!-- we are disabling infinite scroll on busy or when there is no more data -->
+  <!-- 0.1 is the distance when we want the infinite  scrolling to happen. That is to trigger infinite scrolling when we reach the bottom of the page, it should be a number between 0 and 1. Its important to have the disabled function just to ensure multiple callback doesnt happen-->
+  <div class="container" infinite-scroll= "nextPage()" infinite-scroll-disabled = "busy || noMoreData" infinite-scroll-distance = ".1" >
+    <!-- indinite scrolling distace is the distance you reach near the bottom to load the next set of images. its between 0 and 1. 0.1 is the distance that you reach close to the bottom of the page to start the loading of fresh set of images -->
+
     <ul class="dynamic-grid angular-grid"
           angular-grid="looks"
           grid-width="275"

@@ -11,7 +11,8 @@
       'ngFileUpload',
       'angularGrid',
       'angularMoment',
-      'mgcrea.ngStrap' //angular strap functionality
+      'mgcrea.ngStrap', //angular strap functionality
+      'infinite-scroll' // infinite scrolling module
     ])
     .config(config)
     .run(run)

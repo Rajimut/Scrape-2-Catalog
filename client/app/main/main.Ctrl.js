@@ -23,6 +23,17 @@
     $scope.picPreview = true;
     $scope.uploadLookTitle = false;
     $scope.uploadLookForm = false;
+
+    $scope.busy = true;
+    // All data is an equivalent of looks array
+    $scope.allData = [];
+    // page is a tracker used to the tract thr number of sets of looks loaded.
+    // It is incremented after loading a set of 4 images
+    // 
+    var page = 0;
+    // its the number of images/looks in each page
+    var step = 3;
+
 // adding success and failure message functions (to be used in create scrape look)
     var alertSuccess = $alert({
       title: 'Success!',
@@ -60,11 +71,32 @@
 
   looksAPI.getAllLooks()
     .then(function(data){
-      $scope.looks = data.data;
+      //$scope.looks = data.data;
+      $scope.allData = data.data;
+      $scope.nextPage();
+      $scope.busy = false;
+      
     })  
     .catch(function(err){ // to catch the errors
       console.log('failed to get the looks' + err);
     });
+
+  $scope.nextPage = function() {
+      var lookLength = $scope.looks.length;
+      if($scope.busy){
+        //console.log(lookLength);
+        return;
+      }
+      console.log(page);
+      $scope.busy = true;
+      $scope.looks = $scope.looks.concat($scope.allData.splice(page*step, step));
+      page++;
+      //console.log(page);
+      $scope.busy = false;
+      if($scope.looks.length === 0){
+        $scope.noMoreData = true;
+      }
+    }; 
 
 // to watch if there are changes to url field entered by user
   $scope.$watch('look.link', function(newVal, oldVal){

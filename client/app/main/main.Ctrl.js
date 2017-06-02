@@ -8,6 +8,7 @@
   MainCtrl.$inject = ['$scope', '$state', 'Auth', '$modal', 'looksAPI', 'scrapeAPI', '$alert', 'Upload'];
 
   function MainCtrl($scope, $state, Auth, $modal, looksAPI, scrapeAPI, $alert, Upload) {
+    
     $scope.user = Auth.getCurrentUser();
     $scope.look = {}; // obj to load individual look
     $scope.looks = [];

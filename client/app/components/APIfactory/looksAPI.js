@@ -36,7 +36,7 @@
     function getUserLooks(id){
       console.log('qwerty');
       return $http.get('/api/look/getUserLooks/?email='+ id,{
-        cache: true
+        //cache: true
       });
     }
 

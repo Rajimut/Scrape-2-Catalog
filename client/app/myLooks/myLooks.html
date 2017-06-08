@@ -11,6 +11,7 @@
           <h3>No Looks Added, Why don't you <a ui-sref="main">add one</a>?</h>
         </div>
 
+  <div class="container">
     <!-- Angular Grid -->
     <ul class="dynamic-grid angular-grid"
           angular-grid="looks"
@@ -35,6 +36,7 @@
             {{ look.title }}
           </div>
         </a>
+        <div class="social">
         <a href="#"
              class="like-look"
              ng-click="addLike(look)">
@@ -53,6 +55,8 @@
                    <i class="fa fa-2x fa-trash-o pull-right icon-edit"
                        data-title="DELETE Item - Cannot be Undone"
                        bs-tooltip></i></a>
+                       </div>
       </li>
     </ul>
   </div>
+</div>

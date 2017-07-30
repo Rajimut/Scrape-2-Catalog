@@ -49,7 +49,7 @@
 			$scope.userLooks = [];
 				looksAPI.getUserLooks(userEmail)
 				.then(function(data){
-					//console.log('load Data');
+					console.log('load Data');
 					//console.log(userEmail);
 					$scope.userLooks = data.data;
 					// console.log($scope.userLooks.length);
